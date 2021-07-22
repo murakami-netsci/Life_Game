@@ -17,13 +17,13 @@ BLOCKSIZE = 32
 
 mod = SourceModule("""
     __global__ void calc_next_cell_state_gpu(int* __restrict__ world, int* __restrict__ next_world, int height, int width){
-    int x = 0;
-    int y = 0;
-    while(y < height){
-        while(x < width){
+            int x;
+            int y;
 
             int mat_x = threadIdx.x + blockIdx.x * blockDim.x;
             int mat_y = threadIdx.y + blockIdx.y * blockDim.y;
+            x=mat_x;
+            y=mat_y;
 
             if (mat_x >= width) {
                 return;
@@ -72,11 +72,6 @@ mod = SourceModule("""
             index = (mat_y % height)* width + (mat_x % width);
             next_world[index] = next_cell;
 
-            x++;
-        }
-        x=0;
-        y++;
-    }
 }
 """)
 
